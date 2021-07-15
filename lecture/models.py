@@ -1,24 +1,38 @@
 from django.db import models
 from django.contrib.auth.models import User
+import os
 
 
 class Lecture(models.Model):
     title = models.CharField(max_length=30)
-    hook_text = models.CharField(max_length=100, blank=True)
     head_image = models.ImageField(upload_to='lecture/images/%Y/%m/%d/', blank=True)
 
-    content = models.TextField()
-    slide = models.TextField()
+    content = models.TextField(blank=True)
 
-    creator = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'[{self.pk}] {self.title} :: {self.creator}'
+        return f'[{self.pk}] {self.title}'
 
     def get_url(self):
         return f'/lecture/{self.pk}/'
 
+    def get_file_name(self):
+        return os.path.basename(self.file_upload.name)
 
+    def get_file_ext(self):
+        return self.get_file_name().split('.')[-1]
+
+
+class Slide(models.Model):
+    image = models.ImageField(upload_to='slide/images/%Y/%m/%d/', blank=True)
+    content = models.TextField(blank=True)
+    lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'[{self.pk}] {self.image.name}'
+
+    def get_file_name(self):
+        return os.path.basename(self.file_upload.name)
 
