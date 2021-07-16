@@ -5,6 +5,7 @@ import os
 
 class Lecture(models.Model):
     title = models.CharField(max_length=30)
+    hook_text = models.CharField(max_length=100, blank=True)
     head_image = models.ImageField(upload_to='lecture/images/%Y/%m/%d/', blank=True)
 
     content = models.TextField(blank=True)

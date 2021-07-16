@@ -11,4 +11,5 @@ urlpatterns = [
     path('', include('page.urls')),
 ]
 
+# _media 폴더 경로 추가
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
