@@ -1,12 +1,22 @@
 {% extends 'lecture/_base.html' %}
 {% load crispy_forms_tags %}
-{% block head_title %}Create Lecture - Lecture{% endblock %}
+
+{% block head_title %}
+    {% if create %}
+        Create Lecture - Lecture
+    {% else %}
+        Update Lecture - Lecture
+    {% endif %}
+{% endblock %}
 
 {% block main_area %}
-    <h1>Lecture 생성</h1>
+    <h1>{% if create %} Lecture 생성 {% else %} Lecture 수정 {% endif %}</h1>
     <hr/>
+
     <form method="POST" enctype="multipart/form-data">{% csrf_token %}
         <table>{{ form | crispy }}</table>
-        <button type="submit" class="btn btn-primary float-right">Submit</button>
+        <button type="submit" class="btn btn-primary float-right">
+            {% if create %} Submit {% else %} Update {% endif %}
+        </button>
     </form>
 {% endblock %}

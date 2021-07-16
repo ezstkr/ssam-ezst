@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+
 urlpatterns = [
     path('update_course/<int:pk>/', views.CourseUpdate.as_view()),
     path('delete_course/<int:pk>/', views.delete_course),
