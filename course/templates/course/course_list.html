@@ -9,6 +9,9 @@
             <i class="fas fa-pen"></i>&nbsp;&nbsp;New Course</a>
         {% endif %}
     {% endif %}
+    <h1>Course {% if category %}<span class="badge badge-secondary">{{ category }}</span>{% endif %}
+        {% if tag %}<span class="badge badge-secondary">{{ tag }} ({{tag.post_set.count}})</span>{% endif %}
+    </h1>
 
     {% if course_list.exists %}
         {% for p in course_list %}

@@ -22,3 +22,5 @@ class Course(models.Model):
         return f'/course/{self.pk}/'
 
 
+
+
