@@ -15,18 +15,22 @@
             <!-- course Author-->
             <p class="lead">
                 by
-                <a class="text-muted fst-italic mb-2" href="#">{{ course.author | upper }}</a>
+                <a class="text-muted fst-italic mb-2" href="#">{{ course.creator | upper }}</a>
             </p>
             <!-- course meta content-->
             <hr />
 
             {% if user.is_authenticated and user == course.creator %}
-                <a href="/course/update_course/{{ course.pk }}/" class="btn btn-info btn-sm float-right" role="button"><i class="fas fa-pen"></i></a>
+            <div class="float-right">
+                <a href="/course/update_course/{{ course.pk }}/" class="btn btn-info btn-sm" role="button"><i class="fas fa-pen"></i></a>
+                <a href="#" class="btn btn-sm btn-danger" data-target="#deleteCourseModal-{{ course.pk }}" data-toggle="modal" role="button" id="course-{{ course.pk }}-delete-modal-btn"><i class="fas fa-trash-alt"></i></a>
+            </div>
+
             {% endif %}
             <div class="text-muted fst-italic mb-2">course on {{ course.created_at }}</div>
             <hr />
-
         </header>
+
         <!-- Preview image figure-->
         {% if course.head_image %}
             <figure class="mb-4"><img class="img-fluid rounded" src="{{ course.head_image.url }}" alt="{{ course.head_image.url }} head_image" /></figure>
@@ -36,32 +40,36 @@
         <!-- course content-->
         <section class="mb-5">
             <p>{{ course.content }}</p>
-            <!-- 블로그 태그 -->
-            {% if course.tags.exists %}
-                <i class="fas fa-tags"></i>
-                {% for tag in course.tags.iterator %}
-                    <a href="{{ tag.get_absolute_url }}"><span class="badge badge-pill badge-dark">{{ tag }}</span></a>
+
+            <ul class="list-group">
+            {% if course.lectures.exists %}
+                {% for lecture in course.lectures.iterator %}
+              <li class="list-group-item"><a href="{{ lecture.get_absolute_url }}"> {{ lecture }}</a></li>
                 {% endfor %}
-                <br/>
-                <br/>
             {% endif %}
-
-            {% if course.file_upload %}
-                <a href="{{ course.file_upload.url }}" class="btn btn-outline-dark" role="button" download>Download
-
-            {% if course.get_file_ext == 'csv' %}
-                <i class="fas fa-file-csv"></i>
-            {% elif course.get_file_ext == 'xlsx' or course.get_file_ext == 'xls' %}
-                <i class="fas fa-file-excel"></i>
-            {% elif course.get_file_ext == 'docx' or course.get_file_ext == 'doc' %}
-                <i class="fas fa-file-word"></i>
-            {% else %}
-                <i class="far fa-file"></i>
-            {% endif %}
-            {{ course.get_file_name }}
-            </a>
-        {% endif %}
+            </ul>
         </section>
     </article>
+
+    <!-- Modal -->
+  <div class="modal fade" id="deleteCourseModal-{{ course.pk }}" tabindex="-1" role="dialog" aria-labelledby="deleteCourseModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="deleteModalLabel">정말 삭제 하시겠습니까?</h5>
+                  <button type="button" class="close" data-dismiss="modal" airia-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <del>{{ course | linebreaks }}</del>
+              </div>
+              <div class="modal-footer">
+                  <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                  <a role="button"href="/course/delete_course/{{ course.pk }}" class="btn btn-danger">Delete</a>
+              </div>
+          </div>
+      </div>
+  </div>
 </div>
 {% endblock %}
