@@ -3,7 +3,7 @@
 {% block head_title %}Create Course - Course{% endblock %}
 
 {% block main_area %}
-    <h1>Create New Post</h1>
+    <h1>Create New Course</h1>
     <hr/>
     <form method="POST" enctype="multipart/form-data">{% csrf_token %}
             {{ form | crispy }}
