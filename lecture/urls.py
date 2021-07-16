@@ -7,7 +7,7 @@ urlpatterns = [
     path('list/<int:pk_course>/', views.LectureList.as_view()),
     path('<int:pk>/', views.LectureDetail.as_view()),
     path('create/', views.LectureCreate.as_view()),
-    path('<int:pk_lecture>/update/', views.LectureUpdate.as_view()),
+    path('<int:pk>/update/', views.LectureUpdate.as_view()),
 #     path('delete/', views.), # 개발 대기 중
 
     path('', views.LectureList.as_view()),

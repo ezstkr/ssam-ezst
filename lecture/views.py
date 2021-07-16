@@ -50,7 +50,7 @@ class LectureDetail(DetailView):
 
 class LectureUpdate(LoginRequiredMixin, UpdateView):
     model = Course
-    fields = ['title', 'content', 'head_image', 'file_upload']
+    fields = ['title', 'content', 'head_image']
 
     template_name = 'lecture/update.html'
 
@@ -64,9 +64,4 @@ class LectureUpdate(LoginRequiredMixin, UpdateView):
 
         else:
             return redirect('/course/')
-
-    def get_context_data(self, **kwargs):
-        context = super(LectureUpdate, self).get_context_data()
-
-        return context
 
