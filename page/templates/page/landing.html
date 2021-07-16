@@ -16,32 +16,35 @@
 </head>
 <body>
 
-<div class="container">
-    <h1 class="mt-5">강좌</h1>
+{% include 'course/navbar.html' %}
 
-    <div id="image-slider" class="splide">
-        <div class="splide__track">
-            <ul class="splide__list">
+<section>
+    <div class="container">
+        <h1 class="mt-5">강좌</h1>
 
-                {% for slide in slides.all %}
-                <li class="splide__slide">
-                    <img alt="{{ slide.image }} - head image - {{ lecture.head_image.url }}"
-                                class="card-img-top"
-                                src="{{ slide.image.url }}"
-                           />
+        <div id="image-slider" class="splide">
+            <div class="splide__track">
+                <ul class="splide__list">
 
-                    <div class="collapse show">
+                    {% for slide in slides.all %}
+                    <li class="splide__slide">
+                        <img alt="{{ slide.image }} - head image - {{ lecture.head_image.url }}"
+                             class="card-img-top"
+                             src="{{ slide.image.url }}"
+                        />
+
+                        <div class="collapse show">
                         <pre class="card card-body">
                             {{slide.content}}
                         </pre>
-                    </div>
-                </li>
-                {% endfor %}
-            </ul>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
-</div>
-
+</section>
 <style>
 .splide__slide img {
 	width : 100%;
@@ -52,6 +55,7 @@
     width: 1.0em;
     height: 1.0em;
 }
+
 
 </style>
 <script>
@@ -73,6 +77,7 @@ document.addEventListener('keydown', function(ev){
         $('.collapse').collapse('toggle')
     }
 });
+
 
 
 
