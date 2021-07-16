@@ -5,34 +5,18 @@ from course.models import Course
 from lecture.models import Lecture
 
 
-def lecture_list(request, pk_course=1):
-    courses = Course.objects.all()
-    course = Course.objects.get(pk=pk_course)
+class LectureList(ListView):
+    model = Course
+    template_name = 'lecture/list.html'
 
-    return render(
-        request,
-        'lecture/list.html',
-        {
-            'courses': courses,
-            'course': course,
-            'lectures': course.lectures,
-            'side_widgets': True,
-        },
-    )
+    def get_context_data(self, **kwargs):
+        context = super(LectureList, self).get_context_data()
+        context['courses'] = Course.objects.all()
+        context['course'] = Course.objects.get(pk=self.kwargs['pk_course'])
+        context['lectures'] = context['course'].lectures
+        context['side_widgets'] = True
 
-
-# class LectureList(ListView):
-#     model = Course
-#
-#     template_name = 'lecture/list.html'
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(ListView, self).get_context_data()
-#         context['courses'] = Course.objects.all()
-#         context['course'] = Course.objects.get(pk=pk_course)
-#         context['lectures'] = context['course'].lectures
-#
-#         return context
+        return context
 
 
 class LectureCreate(LoginRequiredMixin, CreateView, UserPassesTestMixin):
@@ -51,33 +35,17 @@ class LectureCreate(LoginRequiredMixin, CreateView, UserPassesTestMixin):
         else:
             return redirect('/course/')
 
+
+class LectureDetail(DetailView):
+    model = Lecture
+    template_name = 'lecture/detail.html'
+
     def get_context_data(self, **kwargs):
-        context = super(LectureCreate, self).get_context_data()
+        context = super(LectureDetail, self).get_context_data()
+        context['lecture'] = Lecture.objects.get(pk=self.kwargs['pk'])
+        context['side_widgets'] = False
 
         return context
-
-
-def lecture_detail(request, pk_lecture):
-    lecture = Lecture.objects.get(pk=pk_lecture)
-
-    return render(
-        request,
-        'lecture/detail.html',
-        {
-            'lecture': lecture,
-            'side_widgets': False,
-        },
-    )
-
-
-# class LectureDetail(DetailView):
-#     model = Lecture
-#     template_name = 'lecture/detail.html'
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(LectureDetail, self).get_context_data()
-#
-#         return context
 
 
 class LectureUpdate(LoginRequiredMixin, UpdateView):
@@ -90,7 +58,7 @@ class LectureUpdate(LoginRequiredMixin, UpdateView):
         current_user = self.request.user
         if current_user.is_authenticated and (current_user.is_staff or current_user.is_superuser):
             form.instance.author = current_user
-            response = super(LectureCreate, self).form_valid(form)
+            response = super(LectureUpdate, self).form_valid(form)
 
             return response
 
