@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'lecture/_base.html' %}
+{% load crispy_forms_tags %}
+{% block head_title %}{{ lecture.title }}{% endblock %}
 
-</body>
-</html>
+{% block main_area %}
+    <div class="card">
+        <h1>{{ lecture.title }}</h1>
+        <br/>
+
+        {% if lecture.head_image %}
+            <img alt="{{ lecture.head_image }} - head image - {{ lecture.head_image.url }}"
+                class="card-img-top"
+                src="{{ lecture.head_image.url }}"
+            />
+        {% endif %}
+
+        <br/>
+        <div class="h3">{{ lecture.content }}</div>
+    </div>
+{% endblock %}

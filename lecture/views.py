@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from course.models import Course
+from lecture.models import Lecture
 
 
-def lecture_list(request, pk_course):
+def lecture_list(request, pk_course=1):
     courses = Course.objects.all()
     course = Course.objects.get(pk=pk_course)
 
@@ -35,7 +36,7 @@ def lecture_list(request, pk_course):
 
 
 class LectureCreate(LoginRequiredMixin, CreateView, UserPassesTestMixin):
-    model = Course
+    model = Lecture
     fields = ['title', 'content', 'head_image']
 
     template_name = 'lecture/create.html'
@@ -48,23 +49,35 @@ class LectureCreate(LoginRequiredMixin, CreateView, UserPassesTestMixin):
 
             return response
         else:
-            return redirect('/lecture/')
+            return redirect('/course/')
 
     def get_context_data(self, **kwargs):
-        context = super(LectureDetail, self).get_context_data()
+        context = super(LectureCreate, self).get_context_data()
 
         return context
 
 
-class LectureDetail(DetailView):
-    model = Course
+def lecture_detail(request, pk_lecture):
+    lecture = Lecture.objects.get(pk=pk_lecture)
 
-    template_name = 'lecture/detail.html'
+    return render(
+        request,
+        'lecture/detail.html',
+        {
+            'lecture': lecture,
+            'side_widgets': False,
+        },
+    )
 
-    def get_context_data(self, **kwargs):
-        context = super(LectureDetail, self).get_context_data()
 
-        return context
+# class LectureDetail(DetailView):
+#     model = Lecture
+#     template_name = 'lecture/detail.html'
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(LectureDetail, self).get_context_data()
+#
+#         return context
 
 
 class LectureUpdate(LoginRequiredMixin, UpdateView):

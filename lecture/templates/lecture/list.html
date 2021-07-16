@@ -1,28 +1,34 @@
 {% extends 'lecture/_base.html' %}
 
 {% block main_area %}
+    <!-- Course title -->
+    <h1 class="fw-bolder mb-1">Course - {{ course.title }}</h1>
+    <br/>
+
     <!-- Main Content-->
     <div class="col-md-8 col-lg-8">
         {% for lecture in lectures.all %}
             <div class="card mb-4">
-                {% if lecture.head_image %}
-                   <a href="#!">
+                <a href="{{ lecture.get_absolute_url }}">
+                    {% if lecture.head_image %}
                        <img alt="{{ lecture.head_image }} - head image - {{ lecture.head_image.url }}"
                             class="card-img-top"
                             src="{{ lecture.head_image.url }}"
                        />
-                   </a>
-                {% else %}
-                     <img alt="random_image" class="card-img-top" src="https://picsum.photos/seed/{{ lecture.pk }}/809/500">
-                {% endif %}
+                    {% else %}
+                         <img alt="random_image" class="card-img-top" src="https://picsum.photos/seed/{{ lecture.pk }}/809/500">
+                    {% endif %}
+                 </a>
 
                 <div class="card-body">
-                    <h2 class="card-title h2">{{ lecture.title }}</h2>
+                    <a href="{{ lecture.get_absolute_url }}">
+                        <h2 class="card-title h2">{{ lecture.title }}</h2>
 
-                    {% if lecture.hook_text %}
-                        <h5 class="text-muted">{{ lecture.hook_text }}</h5>
-                    {% endif %}
-                </div>
+                        {% if lecture.hook_text %}
+                            <h5 class="text-muted">{{ lecture.hook_text }}</h5>
+                        {% endif %}
+                    </a>
+               </div>
 
 <!--                <div class="card-footer text-muted">-->
 <!--                    Posted on {{ lecture.created_at }} by-->
