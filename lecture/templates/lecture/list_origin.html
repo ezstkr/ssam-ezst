@@ -18,31 +18,38 @@
         <!-- Main Content-->
         <div class="col-md-8 col-lg-8">
             {% for lecture in lectures.all %}
-                <div class="card mb-4">
-                    {% if lecture.head_image %}
-                       <a href="#!">
-                           <img alt="{{ lecture.head_image }} - head image - {{ lecture.head_image.url }}"
-                                class="card-img-top"
-                                src="{{ lecture.head_image.url }}"
-                           />
-                       </a>
-                    {% else %}
-                         <img alt="random_image" class="card-img-top" src="https://picsum.photos/seed/{{ lecture.pk }}/809/500">
+            <div class="card mb-4">
+                {% if lecture.head_image %}
+                <a href="#!">
+                    <img alt="{{ lecture.head_image }} - head image - {{ lecture.head_image.url }}"
+                         class="card-img-top"
+                         src="{{ lecture.head_image.url }}"
+                    />
+                </a>
+                {% else %}
+                <img alt="random_image" class="card-img-top" src="https://picsum.photos/seed/{{ lecture.pk }}/809/500">
+                {% endif %}
+
+                <div class="card-body">
+                    <h2 class="card-title h2">{{ lecture.title }}</h2>
+
+                    {% if lecture.hook_text %}
+                    <h5 class="text-muted">{{ lecture.hook_text }}</h5>
                     {% endif %}
+                </div>
 
-                    <div class="card-body">
-                        <h2 class="card-title h2">{{ lecture.title }}</h2>
-
-                        {% if lecture.hook_text %}
-                            <h5 class="text-muted">{{ lecture.hook_text }}</h5>
-                        {% endif %}
-                    </div>
-
+<<<<<<< HEAD:lecture/templates/lecture/list_origin.html
 <!--                    <div class="card-footer text-muted">-->
 <!--                        Posted on {{ lecture.created_at }} by-->
 <!--                        <a href="#">{{ lecture.author | upper }}</a>-->
 <!--                    </div>-->
+=======
+                <div class="card-footer text-muted">
+                    Posted on {{ lecture.created_at }} by
+                    <a href="#">{{ lecture.author | upper }}</a>
+>>>>>>> e894353c133da68d814682c0b3a19d6b0ef4f941:lecture/templates/lecture/lecture_list.html
                 </div>
+            </div>
             {% endfor %}
         </div>
 
@@ -50,7 +57,7 @@
         <div class="col-lg-4">
             <div class="card mb-4">
                 {% for course in courses.all %}
-                    <a href="{{ course.get_url }}">{{ course.title }}</a>
+                <a href="{{ course.get_url }}">{{ course.title }}</a>
                 {% endfor %}
             </div>
         </div>

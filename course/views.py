@@ -43,9 +43,9 @@ class CourseDetail(DetailView):
 
 class CourseUpdate(LoginRequiredMixin, UpdateView):
     model = Course
-    fields = ['title', 'content', 'head_image', 'file_upload']
+    fields = ['title','creator','content', 'head_image']
 
-    template_name = 'blog/course_update_form.html'
+    template_name = 'course/course_update_form.html'
 
     def get_context_data(self, **kwargs):
         context = super(CourseUpdate, self).get_context_data()
