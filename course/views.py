@@ -15,6 +15,7 @@ class CourseList(ListView):
 
         return context
 
+
 class CourseCreate(LoginRequiredMixin, CreateView, UserPassesTestMixin):
     model = Course
     fields = ['title', 'content', 'head_image']
