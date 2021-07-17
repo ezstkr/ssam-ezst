@@ -22,8 +22,9 @@
 
             {% if user.is_authenticated and user == course.creator %}
             <div class="float-right">
+                Lecture 추가 ->&nbsp
                 <a href="/course/update_course/{{ course.pk }}/" class="btn btn-info btn-sm" role="button">
-                    Course에 Lecture 추가 -> &nbsp&nbsp<i class="fas fa-pen"></i>
+                    <i class="fas fa-pen"></i>
                 </a>
                 <a href="#" class="btn btn-sm btn-danger" data-target="#deleteCourseModal-{{ course.pk }}" data-toggle="modal" role="button" id="course-{{ course.pk }}-delete-modal-btn"><i class="fas fa-trash-alt"></i></a>
             </div>
@@ -57,14 +58,46 @@
 
                                 <a href="#"
                                    class="btn btn-sm btn-danger"
-                                   data-target="#deleteLectureModal-{{ lecture.pk }}"
+                                   data-target="#removeLectureModal-{{ lecture.pk }}"
                                    data-toggle="modal" role="button"
-                                   id="lecture-{{ lecture.pk }}-delete-modal-btn">
+                                   id="lecture-{{ lecture.pk }}-remove-modal-btn">
                                     <i class="fas fa-trash-alt"></i>
                                 </a>
                             </div>
 
-                            <!-- Lecture Modal -->
+                            <!-- Remove Lecture Modal -->
+                            <div class="modal fade" id="removeLectureModal-{{ lecture.pk }}"
+                                 tabindex="-1" role="dialog" aria-labelledby="removeLectureModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="removeModalLabel2">정말 삭제 하시겠습니까?</h5>
+                                            <button type="button" class="close" data-dismiss="modal" airia-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <a href="#"
+                                               class="btn btn-sm btn-danger float-right"
+                                               data-target="#deleteLectureModal-{{ lecture.pk }}"
+                                               data-toggle="modal" role="button" id="lecture-{{ lecture.pk }}-delete-modal-btn">
+                                                Lecture 자체를 삭제
+                                            </a>
+                                            <del>{{ lecture | linebreaks }}</del>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-secondary" data-dismiss="modal">
+                                                Cancel
+                                            </button>
+                                            <a role="button" href="/course/remove_lecture/{{ course.pk }}/{{ lecture.pk }}" class="btn btn-danger">
+                                                Course 목록에서 삭제
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Delete Lecture Modal -->
                             <div class="modal fade" id="deleteLectureModal-{{ lecture.pk }}"
                                  tabindex="-1" role="dialog" aria-labelledby="deleteLectureModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
@@ -77,7 +110,7 @@
                                         </div>
                                         <div class="modal-body">
                                             <del>{{ lecture | linebreaks }}</del>
-                                            (주의: course 목록에서뿐만 아니라 lecture 아이템 자체가 삭제됨)
+                                            (주의: course 목록에서뿐만 아니라 lecture 자체가 삭제됨)
                                         </div>
                                         <div class="modal-footer">
                                             <button class="btn btn-secondary" data-dismiss="modal">
@@ -108,7 +141,7 @@
         </section>
     </article>
 
-    <!-- Course Modal -->
+    <!-- Delete Course Modal -->
   <div class="modal fade" id="deleteCourseModal-{{ course.pk }}" tabindex="-1" role="dialog" aria-labelledby="deleteCourseModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
           <div class="modal-content">

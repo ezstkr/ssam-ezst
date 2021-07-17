@@ -34,6 +34,7 @@ class CourseCreate(LoginRequiredMixin, CreateView, UserPassesTestMixin):
 
 class CourseDetail(DetailView):
     model = Course
+    # fields = ['lectures']
 
     def get_context_data(self, **kwargs):
         context = super(CourseDetail, self).get_context_data()
@@ -43,7 +44,7 @@ class CourseDetail(DetailView):
 
 class CourseUpdate(LoginRequiredMixin, UpdateView):
     model = Course
-    fields = ['title','creator','content', 'head_image']
+    fields = ['title','creator', 'lectures', 'content', 'head_image']
 
     template_name = 'course/course_update_form.html'
 
@@ -56,8 +57,19 @@ class CourseUpdate(LoginRequiredMixin, UpdateView):
 def delete_course(request, pk):
     course = Course.objects.get(pk=pk)
 
-    if request.user.is_authenticated and request.user == course.creator:
+    if request.user.is_authenticated and (request.user == course.creator or request.user.is_superuser):
         course.delete()
         return redirect('/course/')
+    else:
+        raise PermissionDenied
+
+
+def remove_lecture_from_course(request, pk_course, pk_lecture):
+    course = Course.objects.get(pk=pk_course)
+
+    if request.user.is_authenticated and (request.user == course.creator or request.user.is_superuser):
+            lecture = course.lectures.get(pk=pk_lecture)
+            course.lectures.remove(lecture)
+            return redirect(f'/course/{pk_course}')
     else:
         raise PermissionDenied

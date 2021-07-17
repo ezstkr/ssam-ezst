@@ -76,7 +76,7 @@ def delete_lecture(request, pk, pk_course):
     lecture = Lecture.objects.get(pk=pk)
     course = Course.objects.get(pk=pk_course)
 
-    if request.user.is_authenticated and request.user == course.creator:
+    if request.user.is_authenticated and (request.user == course.creator or request.user.is_superuser):
         lecture.delete()
         return redirect(f'/course/{pk_course}')
     else:
