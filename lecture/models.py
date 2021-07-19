@@ -28,7 +28,7 @@ class Lecture(models.Model):
 class Slide(models.Model):
     image = models.ImageField(upload_to='slide/images/%Y/%m/%d/', blank=True)
     content = models.TextField(blank=True)
-    lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE)
+    lecture = models.ForeignKey(Lecture, on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'[{self.pk}] {self.image.name}'
