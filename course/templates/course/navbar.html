@@ -21,7 +21,11 @@
                     {{user.username}}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/accounts/logout">Log Out</a>
+                    <form method="post" action="{% url 'account_logout' %}">
+                      {% csrf_token %}
+                      <input type="hidden" name="next" value="/"/>
+                      <button id="signOutBtn" type="submit" class="dropdown-item">Logout</button>
+                    </form>
                 </div>
             </li>
             {% else %}
