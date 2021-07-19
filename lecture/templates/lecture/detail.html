@@ -27,11 +27,12 @@
 
             {% for slide in slides %}
             <li class="splide__slide">
+                {% if slide.image %}
                 <img alt="{{ slide.image }} - head image - {{ lecture.head_image.url }}"
                      class="card-img-top"
                      src="{{ slide.image.url }}"
                 />
-
+                {% endif %}
                 <div class="collapse show">
                         <pre class="card card-body slide-content">
 {{slide.content}}
