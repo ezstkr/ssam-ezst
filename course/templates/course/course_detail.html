@@ -1,133 +1,133 @@
 {% extends 'course/base.html' %}
 
 {% block head_title %}
-    {{ course.title }} - Course
+{{ course.title }} - Course
 {% endblock %}
 
 
 {% block main_area %}
 <div id="course-area">
-      <article>
+    <article>
         <!-- course header-->
         <header class="mb-4">
             <!-- course title-->
             <h1 class="fw-bolder mb-1">{{ course.title }}</h1>
-            <!-- course Author-->
-            <p class="lead">
-                by
-                <a class="text-muted fst-italic mb-2" href="#">{{ course.creator | upper }}</a>
-            </p>
             <!-- course meta content-->
-            <hr />
+            <hr/>
 
-            {% if user.is_authenticated and user == course.creator %}
+            {% if user.is_superuser or user.is_staff %}
             <div class="float-right">
                 <a href="/course/update_course/{{ course.pk }}/" class="btn btn-info btn-sm" role="button">
                     Course에 Lecture 추가 -> &nbsp&nbsp<i class="fas fa-pen"></i>
                 </a>
-                <a href="#" class="btn btn-sm btn-danger" data-target="#deleteCourseModal-{{ course.pk }}" data-toggle="modal" role="button" id="course-{{ course.pk }}-delete-modal-btn"><i class="fas fa-trash-alt"></i></a>
+                <a href="#" class="btn btn-sm btn-danger" data-target="#deleteCourseModal-{{ course.pk }}"
+                   data-toggle="modal" role="button" id="course-{{ course.pk }}-delete-modal-btn"><i
+                    class="fas fa-trash-alt"></i></a>
             </div>
 
             {% endif %}
             <div class="text-muted fst-italic mb-2">course on {{ course.created_at }}</div>
-            <hr />
+            <hr/>
         </header>
-
-        <!-- Preview image figure-->
-        {% if course.head_image %}
-            <figure class="mb-4"><img class="img-fluid rounded" src="{{ course.head_image.url }}" alt="{{ course.head_image.url }} head_image" /></figure>
-        {% else %}
-            <img src="https://picsum.photos/seed/{{ course.id }}//800/200" alt="random_image">
-        {% endif %}
-        <!-- course content-->
-        <section class="mb-5">
-            <p>{{ course.content }}</p>
-
-            <ul class="list-group">
+        <div class="row">
             {% if course.lectures.exists %}
-                {% for lecture in course.lectures.iterator %}
-                    <li class="list-group-item">
-                        {% if user.is_authenticated and user == course.creator %}
+            {% for lecture in course.lectures.iterator %}
+            <div class="col-4">
+                <div class="card card-body">
+                    {% if lecture.head_image %}
+                    <a href="{{ lecture.get_absolute_url }}">
+                        <figure class="mb-4">
+                            <img class="figure-img img-fluid rounded" src="{{ lecture.head_image.url }}"
+                                 alt="{{ lecture.head_image.url }} head_image"/>
+                        </figure>
+                        <p>{{lecture.title}}</p>
+                    </a>
+                    {% endif %}
 
-                            <!-- Update, Delete button -->
-                            <div class="float-right">
-                                <a href="/lecture/{{ lecture.pk }}/update" class="btn btn-info btn-sm" role="button">
-                                    <i class="fas fa-pen"></i>
-                                </a>
 
-                                <a href="#"
-                                   class="btn btn-sm btn-danger"
-                                   data-target="#deleteLectureModal-{{ lecture.pk }}"
-                                   data-toggle="modal" role="button"
-                                   id="lecture-{{ lecture.pk }}-delete-modal-btn">
-                                    <i class="fas fa-trash-alt"></i>
-                                </a>
-                            </div>
+                    {% if user.is_superuser or user.is_staff %}
+                    <!-- Update, Delete button -->
+                    <div>
+                        <a href="/lecture/{{ lecture.pk }}/update" class="btn btn-info btn-sm" role="button">
+                            <i class="fas fa-pen"></i>
+                        </a>
 
-                            <!-- Lecture Modal -->
-                            <div class="modal fade" id="deleteLectureModal-{{ lecture.pk }}"
-                                 tabindex="-1" role="dialog" aria-labelledby="deleteLectureModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="deleteModalLabel2">정말 삭제 하시겠습니까?</h5>
-                                            <button type="button" class="close" data-dismiss="modal" airia-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <del>{{ lecture | linebreaks }}</del>
-                                            (주의: course 목록에서뿐만 아니라 lecture 아이템 자체가 삭제됨)
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button class="btn btn-secondary" data-dismiss="modal">
-                                                Cancel
-                                            </button>
-                                            <a role="button" href="/lecture/{{ lecture.pk }}/delete/{{ course.pk }}" class="btn btn-danger">
-                                                Delete
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endif %}
-
-                        <a href="{{ lecture.get_absolute_url }}">{{ lecture }}</a>
-                    </li>
-                {% endfor %}
-
-                {% if user.is_authenticated and user == course.creator %}
-                    <div class="float-right">
-                        <a href="/lecture/create" class="btn btn-info btn-sm" role="button">
-                            Lecture 생성하기!&nbsp&nbsp<i class="fas fa-pen"></i>
+                        <a href="#"
+                           class="btn btn-sm btn-danger"
+                           data-target="#deleteLectureModal-{{ lecture.pk }}"
+                           data-toggle="modal" role="button"
+                           id="lecture-{{ lecture.pk }}-delete-modal-btn">
+                            <i class="fas fa-trash-alt"></i>
                         </a>
                     </div>
-                {% endif %}
+                    {% endif %}
+                </div>
+                <!-- Lecture Modal -->
+                <div class="modal fade" id="deleteLectureModal-{{ lecture.pk }}"
+                     tabindex="-1" role="dialog" aria-labelledby="deleteLectureModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel2">정말 삭제 하시겠습니까?</h5>
+                                <button type="button" class="close" data-dismiss="modal"
+                                        airia-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <del>{{ lecture | linebreaks }}</del>
+                                (주의: course 목록에서뿐만 아니라 lecture 아이템 자체가 삭제됨)
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-dismiss="modal">
+                                    Cancel
+                                </button>
+                                <a role="button" href="/lecture/{{ lecture.pk }}/delete/{{ course.pk }}"
+                                   class="btn btn-danger">
+                                    Delete
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            {% endfor %}
+
+            {% if user.is_authenticated and user == course.creator %}
+            <div class="float-right">
+                <a href="/lecture/create" class="btn btn-info btn-sm" role="button">
+                    Lecture 생성하기!&nbsp&nbsp<i class="fas fa-pen"></i>
+                </a>
+            </div>
             {% endif %}
-            </ul>
-        </section>
+            {% endif %}
+        </div>
+
     </article>
 
     <!-- Course Modal -->
-  <div class="modal fade" id="deleteCourseModal-{{ course.pk }}" tabindex="-1" role="dialog" aria-labelledby="deleteCourseModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title" id="deleteModalLabel">정말 삭제 하시겠습니까?</h5>
-                  <button type="button" class="close" data-dismiss="modal" airia-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
-              </div>
-              <div class="modal-body">
-                  <del>{{ course | linebreaks }}</del>
-              </div>
-              <div class="modal-footer">
-                  <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                  <a role="button"href="/course/delete_course/{{ course.pk }}" class="btn btn-danger">Delete</a>
-              </div>
-          </div>
-      </div>
-  </div>
+    <div class="modal fade" id="deleteCourseModal-{{ course.pk }}" tabindex="-1" role="dialog"
+         aria-labelledby="deleteCourseModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">정말 삭제 하시겠습니까?</h5>
+                    <button type="button" class="close" data-dismiss="modal" airia-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <del>{{ course | linebreaks }}</del>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <a role="button" href="/course/delete_course/{{ course.pk }}" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 </div>

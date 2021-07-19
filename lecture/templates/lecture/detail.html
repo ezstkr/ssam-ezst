@@ -3,18 +3,72 @@
 {% block head_title %}{{ lecture.title }}{% endblock %}
 
 {% block main_area %}
-    <div class="card">
-        <h1>{{ lecture.title }}</h1>
-        <br/>
 
-        {% if lecture.head_image %}
-            <img alt="{{ lecture.head_image }} - head image - {{ lecture.head_image.url }}"
-                class="card-img-top"
-                src="{{ lecture.head_image.url }}"
-            />
-        {% endif %}
+<style>
+.splide__slide img {
+	width : 100%;
+	height: auto;
+}
 
-        <br/>
-        <div class="h3">{{ lecture.content }}</div>
+.splide__arrow svg {
+    width: 1.0em;
+    height: 1.0em;
+}
+
+.slide-content {
+    color: #121231;
+    font-size: 18px;
+}
+</style>
+
+<div id="image-slider" class="splide">
+    <div class="splide__track">
+        <ul class="splide__list">
+
+            {% for slide in slides %}
+            <li class="splide__slide">
+                <img alt="{{ slide.image }} - head image - {{ lecture.head_image.url }}"
+                     class="card-img-top"
+                     src="{{ slide.image.url }}"
+                />
+
+                <div class="collapse show">
+                        <pre class="card card-body slide-content">
+                            {{slide.content}}
+                        </pre>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
     </div>
+</div>
+
+<script>
+
+document.addEventListener( 'DOMContentLoaded', function () {
+	new Splide( '#image-slider', {
+	    classes: {
+            arrows: 'splide__arrows your-class-arrows',
+            arrow : 'splide__arrow your-class-arrow',
+            prev  : 'splide__arrow--prev your-class-prev',
+            next  : 'splide__arrow--next your-class-next',
+        },
+        type: 'fade',
+	} ).mount();
+} );
+
+
+document.addEventListener('keydown', function(ev){
+    if(ev.which == 32) {
+        $('.collapse').collapse('toggle')
+    }
+});
+
+
+
+
+
+
+</script>
 {% endblock %}
+

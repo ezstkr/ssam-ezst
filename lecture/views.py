@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionDenied
 from course.models import Course
-from lecture.models import Lecture
+from lecture.models import Lecture, Slide
 
 
 class LectureList(ListView):
@@ -48,8 +48,10 @@ class LectureDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(LectureDetail, self).get_context_data()
-        context['lecture'] = Lecture.objects.get(pk=self.kwargs['pk'])
-        context['side_widgets'] = False
+
+        lecture = Lecture.objects.get(pk=self.kwargs['pk'])
+        context['lecture'] = lecture
+        context['slides'] = lecture.slide_set.all()
 
         return context
 
