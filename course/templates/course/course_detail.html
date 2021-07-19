@@ -6,6 +6,8 @@
 
 
 {% block main_area %}
+
+{% if user.is_staff %}
 <div id="course-area">
     <article>
         <!-- course header-->
@@ -15,7 +17,7 @@
             <!-- course meta content-->
             <hr/>
 
-            {% if user.is_superuser or user.is_staff %}
+            {% if user.is_superuser %}
             <div class="float-right">
                 Lecture 추가 ->&nbsp
                 <a href="/course/update_course/{{ course.pk }}/" class="btn btn-info btn-sm" role="button">
@@ -44,7 +46,7 @@
                         <p>{{lecture.title}}</p>
                     </a>
                     {% endif %}
-                    {% if user.is_superuser or user.is_staff %}
+                    {% if user.is_superuser %}
                     <!-- Update, Delete button -->
                     <div>
                         <a href="/lecture/{{ lecture.pk }}/update" class="btn btn-info btn-sm" role="button">
@@ -164,4 +166,7 @@
     </div>
 
 </div>
+{% else %}
+<h3>사용 권한이 없습니다. 관리자에게 문의해주세요.</h3>
+{% endif %}
 {% endblock %}

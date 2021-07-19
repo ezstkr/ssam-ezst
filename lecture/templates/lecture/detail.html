@@ -21,6 +21,7 @@
 }
 </style>
 
+{% if user.is_staff %}
 <div id="image-slider" class="splide">
     <div class="splide__track">
         <ul class="splide__list">
@@ -43,6 +44,10 @@
         </ul>
     </div>
 </div>
+{% else %}
+<h3>사용 권한이 없습니다. 관리자에게 문의해주세요.</h3>
+{% endif %}
+
 
 <script>
 
