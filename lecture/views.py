@@ -51,7 +51,7 @@ class LectureDetail(DetailView):
 
         lecture = Lecture.objects.get(pk=self.kwargs['pk'])
         context['lecture'] = lecture
-        context['slides'] = lecture.slide_set.all()
+        context['slides'] = lecture.slide_set.all().order_by('pk')
 
         return context
 
