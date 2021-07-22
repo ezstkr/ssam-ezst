@@ -24,6 +24,9 @@ class Lecture(models.Model):
     def get_file_ext(self):
         return self.get_file_name().split('.')[-1]
 
+    class Meta:
+        ordering = ['title']
+
 
 class Slide(models.Model):
     image = models.ImageField(upload_to='slide/images/%Y/%m/%d/', blank=True)

@@ -38,7 +38,6 @@ class CourseDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(CourseDetail, self).get_context_data()
-
         return context
 
 
@@ -50,7 +49,6 @@ class CourseUpdate(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(CourseUpdate, self).get_context_data()
-
         return context
 
 

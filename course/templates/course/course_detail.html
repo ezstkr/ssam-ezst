@@ -34,7 +34,7 @@
         </header>
         <div class="row">
             {% if course.lectures.exists %}
-            {% for lecture in course.lectures.iterator %}
+            {% for lecture in course.lectures.all %}
             <div class="col-4">
                 <div class="card card-body">
                     {% if lecture.head_image %}
